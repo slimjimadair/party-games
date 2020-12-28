@@ -1,0 +1,100 @@
+:root {
+  --black: #231e22;
+  --grey: #808285;
+  --white: #fcfcfc;
+  --coral: #f15846;
+  --bluegreen: #057e77;
+}
+
+body {
+  background-color: var(--white);
+}
+
+*, *::before, *::after {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--black);
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Boogaloo', cursive;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  width: 100vw;
+}
+
+.top {
+  height: 30vh;
+  width: 90vw;
+  margin-top: 10vh;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.top .content {
+  width: 100%;
+}
+
+.main {
+  height: 50vh;
+  width: 90vw;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  width: 90%;
+  margin: 2%;
+  padding: 2em;
+  transform: skew(-2deg, 2deg);
+}
+
+.item.bg-grey {
+  background-color: var(--grey)
+}
+
+.item.bg-red {
+  background-color: var(--coral)
+}
+
+.item.bg-green {
+  background-color: var(--bluegreen)
+}
+
+.item .content {
+  transform: skew(2deg, -2deg);
+}
+
+.item .content h2 {
+  color: var(--white);
+}
+
+@media only screen and (min-width: 800px) {
+  /* For medium screens */
+  .item {width: 40%;}
+}
+
+@media only screen and (min-width: 1200px) {
+  /* For large screens */
+  .item {width: 25%;}
+}
+
