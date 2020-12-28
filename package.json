@@ -1,0 +1,28 @@
+{
+  "name": "party-games",
+  "version": "1.0.0",
+  "description": "Multiplayer web browser party games.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slimjimadair/party-games.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slimjimadair/party-games/issues"
+  },
+  "homepage": "https://github.com/slimjimadair/party-games#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^3.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
