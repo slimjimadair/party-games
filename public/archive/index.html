@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Games</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Montserrat&display=swap" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js" charset="utf-8"></script>
+</head>
+<body>
+  <!-- LANDING PAGE -->
+  <div id="landing" class="container">
+    <div class="info">
+    </div>
+    <div class="top">
+      <div class="content">
+        <h1 class="title">PARTY GAMES</h1>
+        <p class="subtitle">Simple web implimentation of party games!</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="item bg-green">
+        <div class="content"><h2>KNOWING ME, KNOWING YOU</h2></div>
+      </div>
+      <div class="item bg-red">
+        <div class="content"><h2>MORE OR LESS</h2></div>
+      </div>
+      <div class="item bg-grey">
+        <div class="content"><h2>COMING SOON!</h2></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLLER - JOINING PAGE -->
+  <div id="control-join" class="container">
+    <div class="info">
+      <div class="info-block">
+        <div class="content">
+          <p class="small">Room Code:</p>
+          <h3>TEST</h3>
+        </div>
+      </div>
+    </div>
+    <div class="top">
+      <div class="content">
+        <h1 class="title">KNOWING ME, KNOWING YOU</h1>
+        <p class="subtitle">Press READY TO PLAY when all players have connected.</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="item player">
+        <img src="/icons/cat.jpg" alt="Cat" class="avatar">
+        <h3>SLUMDOG</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/rbt.jpg" alt="Robot" class="avatar">
+        <h3>SLIMJIM</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/ott.jpg" alt="Otter" class="avatar">
+        <h3>CRABGUTS</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/cak.jpg" alt="Cake" class="avatar">
+        <h3>GUBBINS</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/mon.jpg" alt="Monkey" class="avatar">
+        <h3>TESSA</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/got.jpg" alt="Goat" class="avatar">
+        <h3>URIAH HEAP</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLLER - PROMPT -->
+  <div id="control-round" class="container">
+    <div class="info">
+      <div class="info-block">
+        <div class="content">
+          <h3>ROUND 1</h3>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="content">
+          <p class="small">Room Code:</p>
+          <h3>TEST</h3>
+        </div>
+      </div>
+    </div>
+    <div class="top">
+      <div class="content">
+        <h1 class="prompt">A BOOK <span class="highlight">CRABGUTS</span> LIED ABOUT READING</h1>
+      </div>
+    </div>
+    <div class="main">
+      <div class="info">
+        <h2>ANSWER ON YOUR DEVICES NOW!</h2>
+      </div>
+      <div class="item player">
+        <img src="/icons/cat.jpg" alt="Cat" class="avatar">
+        <h3>SLUMDOG</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/rbt.jpg" alt="Robot" class="avatar">
+        <h3>SLIMJIM</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/ott.jpg" alt="Otter" class="avatar">
+        <h3>CRABGUTS</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/cak.jpg" alt="Cake" class="avatar">
+        <h3>GUBBINS</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/mon.jpg" alt="Monkey" class="avatar">
+        <h3>TESSA</h3>
+      </div>
+      <div class="item player">
+        <img src="/icons/got.jpg" alt="Goat" class="avatar">
+        <h3>URIAH HEAP</h3>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

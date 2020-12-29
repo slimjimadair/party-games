@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Games</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Montserrat&display=swap" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js" charset="utf-8"></script>
+</head>
+<body>
+  <div id="head" class="section head">
+    <div id="head-round" class="head-item">
+      <div class="text main">ROUND 1</div>
+    </div>
+    <div id="head-avatar" class="">
+      <img src="/icons/got.jpg" alt="Goat" class="avatar-big">
+    </div>
+    <div id="head-room" class="head-item">
+      <div class="text note">ROOM CODE</div>
+      <div class="text main">TEST</div>
+    </div>
+  </div>
+  <div id="title" class="section title">
+    <div class="prompt">THE ACTOR <span class="highlight">CRABGUTS</span> THINKS WOULD PLAY THEM IN A FILM ABOUT THEIR LIFE</div>
+  </div>
+  <div id="content" class="content">
+    <div class="container">
+      <div class="block-title light">CHOOSE WISELY</div>
+      <div class="holder">
+        <button class="item all-skewed">
+          <div class="text main">STEVE BUSCEMI</div>
+        </button>
+        <div class="votes"></div>
+      </div>
+      <div class="holder">
+        <button class="item all-skewed">
+          <div class="text main">GEORGE CLOONEY</div>
+        </button>
+        <div class="votes"></div>
+      </div>
+      <div class="holder">
+        <div class="item all-skewed red">
+          <div class="text main">GARY OLDMAN</div>
+        </div>
+        <div class="votes">
+          <div class="vote all-skewed player">
+              <img src="/icons/rbt.jpg" alt="Robot" class="avatar-small">
+              <div class="name">SLIMJIM</div>
+          </div>
+          <div class="vote all-skewed player">
+            <img src="/icons/cat.jpg" alt="Cat" class="avatar-small">
+            <div class="name">SLUMDOG</div>
+          </div>
+        </div>
+      </div>
+      <div class="holder">
+        <button class="item all-skewed green">
+          <div class="text main">TOMMY WISEAU</div>
+        </button>
+        <div class="votes"></div>
+      </div>
+    </div>
+  </div>
+  <div id="foot" class="section foot">
+    <div class="copyright">by <strong>slimjimadair</strong> using node.js and socket.io</div>
+  </div>
+</body>
+</html>

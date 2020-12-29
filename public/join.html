@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Games</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Montserrat&display=swap" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js" charset="utf-8"></script>
+</head>
+<body>
+  <div id="head" class="section head">
+  </div>
+  <div id="title" class="section title">
+    <div class="main-title">KNOWING ME, KNOWING YOU</div>
+    <div class="sub-title">How well do you know your friends?</div>
+  </div>
+  <div id="content" class="content">
+    <div class="container half">
+      <div class="item large all-skewed">
+        <div class="text note">ROOM CODE</div>
+        <div class="text main">TEST</div>
+      </div>
+    </div>
+    <div class="container half">
+      <div class="block-title">WHO'S IN?</div>
+      <div class="holder">
+        <div class="item all-skewed player">
+          <img src="/icons/cat.jpg" alt="Cat" class="avatar">
+          <div class="name vip">SLUMDOG</div>
+        </div>
+      </div>
+      <div class="holder">
+        <div class="item all-skewed player">
+          <img src="/icons/rbt.jpg" alt="Robot" class="avatar">
+          <div class="name">SLIMJIM</div>
+        </div>
+      </div>
+      <div class="holder">
+        <div class="item all-skewed player">
+          <img src="/icons/got.jpg" alt="Goat" class="avatar">
+          <div class="name">CRABGUTS</div>
+        </div>
+      </div>
+      <div class="block-info">Press READY TO PLAY when everyone has joined!</div>
+    </div>
+  </div>
+  <div id="foot" class="section foot">
+    <div class="copyright">by <strong>slimjimadair</strong> using node.js and socket.io</div>
+  </div>
+</body>
+</html>
