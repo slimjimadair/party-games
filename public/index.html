@@ -11,13 +11,45 @@
   <script src="app.js" charset="utf-8"></script>
 </head>
 <body>
+  <!-- HEADER BAR -->
   <div id="head" class="section head">
+    <div id="head-round" class="head-item">
+    </div>
+    <div id="head-avatar" class="">
+    </div>
+    <div id="head-room" class="head-item">
+    </div>
   </div>
+
+  <!-- TITLE / PROMPT-->
   <div id="title" class="section title">
-    <div class="main-title">PARTY GAMES</div>
-    <div class="sub-title">Simple web implementation of party games!</div>
+    <div id="main-title" class="main-title">PARTY GAMES</div>
+    <div id="sub-title" class="sub-title">Simple web implementation of party games!</div>
+    <div id="prompt" class="prompt hide">THE ACTOR <span class="highlight">CRABGUTS</span> THINKS WOULD PLAY THEM IN A FILM ABOUT THEIR LIFE</div>
   </div>
-  <div id="content" class="content">
+
+  <!-- GAME CONTENT-->
+  <div id="game" class="content hide">
+    <div id="control-join" class="container half hide">
+      <div class="item large all-skewed">
+        <div class="text note">ROOM CODE</div>
+        <div id="control-join-code" class="text main">TEST</div>
+      </div>
+    </div>
+    <div id="control-join-list" class="container half hide">
+      <div class="block-title">WHO'S IN?</div>
+    </div>
+    <div id="control-prompt" class="container hide"></div>
+    <div id="control-results" class="container hide"></div>
+    <div id="control-scores" class="container hide"></div>
+    <div id="player-join" class="container hide"></div>
+    <div id="player-wait" class="container hide"></div>
+    <div id="player-input" class="container hide"></div>
+    <div id="player-vote" class="container hide"></div>
+  </div>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash" class="content">
     <div class="container half">
       <div class="block-title">JOIN A GAME</div>
       <label for="room-code">Room Code</label>
@@ -27,25 +59,21 @@
       <div class="holder">
         <button type="submit" class="green">JOIN</button>
       </div>      
-      <div class="block-info"></div>
+      <div id="join-info-block" class="block-info"></div>
     </div>
     <div class="container half">
-      <div class="block-title">PAGE PREVIEWS</div>
+      <div class="block-title">START A GAME</div>
       <div class="holder">
-        <button type="link" class="" onclick="window.location.href='/join.html'">JOIN SCREEN</button>
+        <button id="start-kmky" type="link" class="green">KNOWING ME, KNOWING YOU</button>
       </div>
       <div class="holder">
-        <button type="link" class="" onclick="window.location.href='/results.html'">RESULTS</button>
+        <button id="start-mol" type="link" class="">MORE OR LESS</button>
       </div>
-      <div class="holder">
-        <button type="link" class="" class="" onclick="window.location.href='/vote.html'">VOTE</button>
-      </div>
-      <div class="holder">
-        <button type="link" class="" class="" onclick="window.location.href='/input.html'">INPUT</button>
-      </div>
-      <div class="block-info">REPLACE SECTION WITH GAMES AFTER DRAFTING</div>
+      <div id="start-info-block" class="block-info">Creates a new room for players to join</div>
     </div>
   </div>
+
+  <!-- FOOTER -->
   <div id="foot" class="section foot">
     <div class="copyright">by <strong>slimjimadair</strong> using node.js and socket.io</div>
   </div>
