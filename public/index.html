@@ -30,6 +30,7 @@
 
   <!-- GAME CONTENT-->
   <div id="game" class="content hide">
+    <!-- CONTROL JOIN -->
     <div id="control-join" class="container half hide">
       <div class="item large all-skewed">
         <div class="text note">ROOM CODE</div>
@@ -39,6 +40,7 @@
     <div id="control-join-list" class="container half hide">
       <div class="block-title">WHO'S IN?</div>
     </div>
+
     <div id="control-prompt" class="container hide"></div>
     <div id="control-results" class="container hide"></div>
     <div id="control-scores" class="container hide"></div>
@@ -53,11 +55,11 @@
     <div class="container half">
       <div class="block-title">JOIN A GAME</div>
       <label for="room-code">Room Code</label>
-      <input type="text" id="room-code" name="room-code">
+      <input type="text" id="join-room-code" name="room-code">
       <label for="player-name">Player Name</label>
-      <input type="text" id="player-name" name="player-name">
+      <input type="text" id="join-player-name" name="player-name">
       <div class="holder">
-        <button type="submit" class="green">JOIN</button>
+        <button id="join-game" type="submit" class="green">JOIN</button>
       </div>      
       <div id="join-info-block" class="block-info"></div>
     </div>
