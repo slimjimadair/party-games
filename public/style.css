@@ -249,6 +249,12 @@ button {
   border-radius: 50%;
 }
 
+.inactive {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
 .player {
   background-color: transparent !important;
 }

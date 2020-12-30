@@ -1,4 +1,7 @@
-// Setup Server
+// Requirements
+const fs = require('fs')
+
+// SETUP SERVER
 const express = require('express')
 const path = require('path')
 const http = require('http')
@@ -8,115 +11,135 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
-// Requirements
-const fs = require('fs')
-
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")))
 
 // Start server
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
-// Definitions
+// DEFINITIONS
 const allIcons = ['ban','ber','cac','cak','car','cat','chr','dck','dlp','fan','flw','fsh','gir','got','lck','mon','mtc','oct','ott','pen','phn','pin','puf','rbt','sgn','sho','spn','tor','tre','wrn']
 let rawdata = fs.readFileSync('data/kmky.json')
 const kmkyData = JSON.parse(rawdata)
 
-// Handle a socket connection request from web client
+// VARIABLES
 const roomsList = []
 const roomsData = []
+const playsList = {}
+
+// CONNECTION ACTIVITY
 io.on('connection', socket => {
-  let connType = '';
-  let playerName = '';
+  // Connection data
+  let connInfo = { type: '', room: '', name: '' }
 
-  // Handle controller starting a game
-  socket.on('start-game', game => {
-
-    connType = 'control'
-
-    let roomCode = makeNewID(4, roomsList)
+  // Start game
+  socket.on('start-room', gameType => {
+    var roomCode = makeNewCode(4, roomsList)
     if (roomCode !== '') {
       // Only assign room to connection if code created
       roomsList.push(roomCode)
-      roomData = { code: roomCode, playing: false, iconsAvailable: shuffle(allIcons), players: [] }
-      if (game === 'kmky') { roomData.gameData = shuffle(kmkyData) }
-      roomsData.push(roomData)
-      console.log(`Starting game: ${roomCode}`)
-      socket.emit('room-created', roomData)
+      playsList[roomCode] = []
+      var roomInfo = { code: roomCode, game: gameType, state: 'join', icons: shuffle(allIcons), players: [], gameData: null }
+      if (gameType === 'kmky') { roomInfo.gameData = shuffle(kmkyData) }
+      roomsData.push(roomInfo)
+      connInfo.type = 'room'
+      connInfo.room = roomCode
+      console.log(`Starting room: ${roomCode} [${gameType}]`)
+      socket.emit('room-started', roomInfo)
     } else {
       // Tell connection if room not created (code not possible)
-      socket.emit('room-created', null);
+      socket.emit('room-started', null);
     }
-
   })
 
-  // Let everyone know if game ready
-  socket.on('room-ready', roomCode => {
-    socket.broadcast.emit('room-ready', roomCode)
-    console.log(`Players ready: ${roomCode}`)
-  })
-
-  // Issue prompts
-  socket.on('set-prompts', promptInfo => {
-    socket.broadcast.emit('set-prompts', promptInfo)
-    console.log(`Sending prompts: ${promptInfo.room}`)
-  })
-
-  // Handle player joining a game
-  socket.on('join-game', gameInfo => {
-    // Check if room exists and respond
-    var playerInfo = null
-    var isVIP = false
-    roomsData.forEach(room => {
-      if (room.code === gameInfo.code) {
-        if (room.playing === false) {
-          playerName = gameInfo.name
-          connType = 'player'
-          isVIP = (room.players.length === 0)
-          playerInfo = { name: gameInfo.name, icon: room.iconsAvailable.slice(0, 1), vip: isVIP, active: true }
-          room.players.push(playerInfo)
-          room.iconsAvailable = room.iconsAvailable.slice(1)
-          socket.broadcast.emit('room-updated', roomsData)
-        } else {
-          for (player in room.players) {
-            if (!player.active && player.name === gameInfo.name) {
-              playerName = gameInfo.name
-              connType = 'player'
-              player.active = true
-            }
+  // Join game
+  socket.on('join-room', joinInfo => {
+    // Check if room exists
+    var emitInfo = null
+    roomsData.forEach( room => {
+      if (room.code === joinInfo.room && room.state === 'join' && !playsList[room.code].includes(joinInfo.name)) {
+        // Add new player if in join mode
+        playInfo = { name: joinInfo.name, state: 'join', icon: room.icons.pop(), vip: (room.players.length === 0), active: true }
+        roomInfo = room
+        emitInfo = { player: playInfo, room: roomInfo }
+        room.players.push(playInfo)
+        playsList[room.code].push(joinInfo.name)
+        connInfo.type = 'play'
+        connInfo.room = room.code
+        connInfo.name = joinInfo.name
+        console.log(`${connInfo.name} joining ${connInfo.room}`)
+      } else if (room.code === joinInfo.room) {
+        room.players.forEach( player => {
+          if (player.name === joinInfo.name && !player.active) {
+            player.active = true
+            playInfo = player
+            roomInfo = room
+            emitInfo = { player: playInfo, room: roomInfo }
           }
-          socket.broadcast.emit('room-updated', roomsData)
-        }
+        })
       }
     })
-    socket.emit('player-info', playerInfo)
+    socket.emit('room-joined', emitInfo)
+    socket.broadcast.emit('room-updated', roomsData)
   })
 
-  // Submit prompts
-  socket.on('submit-prompt', promptSubmission => {
-    socket.broadcast.emit('submit-prompt', promptSubmission)
+  // Disconnect
+  socket.on('disconnect', () => {
+    if (connInfo.type === 'room') {
+      // Handle room closing
+      socket.broadcast.emit('room-closed', connInfo.room)
+      var index = -1
+      roomsData.forEach( room => {
+        if (room.code === connInfo.room) {
+          index = roomsData.indexOf(room)
+        }
+      })
+      if (index > -1) roomsData.splice(index, 1)
+    } else if (connInfo.type === 'play') {
+      // Handle player drop
+      roomsData.forEach( room => {
+        if (room.code === connInfo.room) {
+          room.players.forEach( player => {
+            if (player.name === connInfo.name) player.active = false
+          })
+        }
+      })
+      socket.broadcast.emit('room-updated', roomsData)
+    }
   })
 
+  // Room ready
+  socket.on('ready-room', roomCode => {
+    socket.broadcast.emit('room-ready', roomCode)
+  })
+
+  // Room state
+  socket.on('room-state', roomInfo => {
+    roomsData.forEach( room => {
+      if (room.code === roomInfo.code) room = roomInfo
+      console.log(`Room ${room.code} set to ${room.state}`)
+    })
+  }) 
 
 })
 
 // FUNCTIONS
-function makeNewID(length, existingIDs) {
+function makeNewCode(length, existingCodes) {
   var result = '';
   var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   var charsLength = chars.length;
   var checkLimit = 0;
   do {
-    result = ''
+    code = ''
     for ( var i = 0; i < length; i++ ) {
-      result += chars.charAt(Math.floor(Math.random() * charsLength));
+      code += chars.charAt(Math.floor(Math.random() * charsLength));
     }
     checkLimit += 1;
   }
-  while ( (result === '' || existingIDs.includes(result)) && checkLimit < 1000 )
-  if (existingIDs.includes(result)) {
+  while ( (code === '' || existingCodes.includes(code)) && checkLimit < 1000 )
+  if (existingCodes.includes(code)) {
     return ''
-  } else return result
+  } else return code
 }
 
 function shuffle(array) {

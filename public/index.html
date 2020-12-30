@@ -23,52 +23,9 @@
 
   <!-- TITLE / PROMPT-->
   <div id="title" class="section title">
-    <div id="main-title" class="main-title">PARTY GAMES</div>
-    <div id="sub-title" class="sub-title">Simple web implementation of party games!</div>
-    <div id="prompt" class="prompt hide">THE ACTOR <span class="highlight">CRABGUTS</span> THINKS WOULD PLAY THEM IN A FILM ABOUT THEIR LIFE</div>
-  </div>
-
-  <!-- GAME CONTENT-->
-  <div id="game" class="content hide">
-    <!-- CONTROL JOIN -->
-    <div id="control-join" class="container half hide">
-      <div class="item large all-skewed">
-        <div class="text note">ROOM CODE</div>
-        <div id="control-join-code" class="text main">TEST</div>
-      </div>
-    </div>
-    <div id="control-join-list" class="container half hide">
-      <div class="block-title">WHO'S IN?</div>
-    </div>
-
-    <!-- CONTROL PROMPT -->
-    <div id="control-prompt" class="container hide"></div>
-    <!-- CONTROL PROMPT -->
-    <div id="control-results" class="container hide"></div>
-    <!-- CONTROL PROMPT -->
-    <div id="control-scores" class="container hide"></div>
-
-    <!-- PLAYER JOIN -->
-    <div id="player-join" class="container hide">
-      <div id="player-join-msg" class="holder hide">
-        <div class="block-title light">YOU'RE IN!<br />WAITING FOR THE GAME TO START</div>
-      </div>
-      <div id="player-vip-msg" class="holder hide">
-        <button id="player-ready" type="link" class="green">ALL READY</button>
-        <div class="block-title light">YOU HAVE THE POWER!<br />START THE GAME WHEN EVERYONE HAS JOINED!</div>
-      </div>
-    </div>
-
-    <!-- PLAYER WAIT -->
-    <div id="player-wait" class="container hide">
-      <div class="block-title light">WAITING FOR OTHER PLAYERS TO ANSWER</div>
-    </div>
-
-    <!-- PLAYER INPUT -->
-    <div id="player-input" class="container hide"></div>
-
-
-    <div id="player-vote" class="container hide"></div>
+    <div id="title-main" class="main-title">PARTY GAMES</div>
+    <div id="title-sub" class="sub-title">Simple web implementation of party games!</div>
+    <div id="title-prompt" class="prompt hide">PROMPT</div>
   </div>
 
   <!-- SPLASH SCREEN -->
@@ -80,20 +37,46 @@
       <label for="player-name">Player Name</label>
       <input type="text" id="join-player-name" name="player-name" maxlength="10">
       <div class="holder">
-        <button id="join-game" type="submit" class="green">JOIN</button>
+        <button id="join-room" type="submit" class="green">JOIN</button>
       </div>      
-      <div id="join-info-block" class="block-info"></div>
+      <div id="info-join" class="block-info"></div>
     </div>
     <div class="container half">
       <div class="block-title">START A GAME</div>
       <div class="holder">
-        <button id="start-kmky" type="link" class="green">KNOWING ME, KNOWING YOU</button>
+        <button id="start-room-kmky" type="link" class="green">KNOWING ME, KNOWING YOU</button>
       </div>
       <div class="holder">
-        <button id="start-mol" type="link" class="">MORE OR LESS</button>
+        <button id="start-room-mol" type="link" class="">MORE OR LESS</button>
       </div>
-      <div id="start-info-block" class="block-info">Creates a new room for players to join</div>
+      <div id="info-start" class="block-info">Creates a new room for players to join</div>
     </div>
+  </div>
+
+  <!-- GAME SCREENS -->
+  <div id="game" class="content hide">
+    <!-- CONTROL -->
+    <!-- CONTROL | JOIN -->
+    <div id="control-join-code" class="container half hide"></div>
+    <div id="control-join-list" class="container half hide"></div>
+    <!-- CONTROL | READY -->
+    <div id="control-ready" class="container hide">CONTROL: READY</div>
+    <!-- CONTROL | WAIT -->
+    <div id="control-wait" class="container hide">CONTROL: WAIT</div>
+    <!-- CONTROL | SHOW -->
+    <div id="control-show" class="container hide">CONTROL: SHOW</div>
+    <!-- CONTROL | SCORE -->
+    <div id="control-score" class="container hide">CONTROL: SCORE</div>
+
+    <!-- PLAYER -->
+    <!-- PLAYER | JOIN -->
+    <div id="player-join" class="container hide">PLAYER: JOIN</div>
+    <!-- PLAYER | WAIT -->
+    <div id="player-wait" class="container hide">PLAYER: WAIT</div>
+    <!-- PLAYER | INPUT -->
+    <div id="player-input" class="container hide">PLAYER: HIDE</div>
+    <!-- PLAYER | CHOOSE -->
+    <div id="player-choose" class="container hide">PLAYER: CHOOSE</div>
   </div>
 
   <!-- FOOTER -->
