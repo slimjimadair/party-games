@@ -1,0 +1,17 @@
+[
+  { "prompt": "Something [player] would do in secret",
+    "answers": ["Pick their nose", "Fart", "Eat fast food", "Hide the bodies", "Plot and scheme"]
+  },
+  { "prompt": "A book [player] lied about reading",
+    "answers": ["1984", "Crime and Punishment", "Lord of the Rings", "Oliver Twist", "The Bible"]
+  },
+  { "prompt": "Something [player] would request as a last meal",
+    "answers": ["Ortolan", "Big Mac", "Terry's Chocolate Orange", "Steak and chips", "Chips, cheese and gravy", "T-Rex steak", "Bananas", "A suggestively shaped carrot"]
+  },
+  { "prompt": "A fact [player] learned recently",
+    "answers": ["Bears eat beets", "Moon landing = fake", "The truth about the Kennedys", "The thing about cinnamon", "What the squirrels are up to", "Dave's secret"]
+  },
+  { "prompt": "[player]'s first celebrity crush",
+    "answers": ["Brad Pitt", "Andrew Lloyd Webber", "Jennifer Aniston", "Minnie Mouse", "Hermione Granger", "Twilight guy", "Steve Buscemi", "George Clooney"]
+  }  
+]

@@ -8,6 +8,9 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
+// Requirements
+const fs = require('fs')
+
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")))
 
@@ -16,26 +19,27 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
 // Definitions
 const allIcons = ['ban','ber','cac','cak','car','cat','chr','dck','dlp','fan','flw','fsh','gir','got','lck','mon','mtc','oct','ott','pen','phn','pin','puf','rbt','sgn','sho','spn','tor','tre','wrn']
+let rawdata = fs.readFileSync('data/kmky.json')
+const kmkyData = JSON.parse(rawdata)
 
 // Handle a socket connection request from web client
 const roomsList = []
 const roomsData = []
-const dummyPlayers = [
-  {name: 'SLUMDOG', icon: 'cat', vip: true, active: true},
-  {name: 'SLIMJIM', icon: 'rbt', vip: false, active: true},
-  {name: 'CRABGUTS', icon: 'ott', vip: false, active: true}
-]
 io.on('connection', socket => {
+  let connType = '';
   let playerName = '';
 
   // Handle controller starting a game
   socket.on('start-game', game => {
 
+    connType = 'control'
+
     let roomCode = makeNewID(4, roomsList)
     if (roomCode !== '') {
       // Only assign room to connection if code created
       roomsList.push(roomCode)
-      roomData = { code: roomCode, iconsAvailable: shuffle(allIcons), players: [] }
+      roomData = { code: roomCode, playing: false, iconsAvailable: shuffle(allIcons), players: [] }
+      if (game === 'kmky') { roomData.gameData = shuffle(kmkyData) }
       roomsData.push(roomData)
       console.log(`Starting game: ${roomCode}`)
       socket.emit('room-created', roomData)
@@ -46,6 +50,18 @@ io.on('connection', socket => {
 
   })
 
+  // Let everyone know if game ready
+  socket.on('room-ready', roomCode => {
+    socket.broadcast.emit('room-ready', roomCode)
+    console.log(`Players ready: ${roomCode}`)
+  })
+
+  // Issue prompts
+  socket.on('set-prompts', promptInfo => {
+    socket.broadcast.emit('set-prompts', promptInfo)
+    console.log(`Sending prompts: ${promptInfo.room}`)
+  })
+
   // Handle player joining a game
   socket.on('join-game', gameInfo => {
     // Check if room exists and respond
@@ -53,16 +69,34 @@ io.on('connection', socket => {
     var isVIP = false
     roomsData.forEach(room => {
       if (room.code === gameInfo.code) {
-        playerName = gameInfo.name
-        isVIP = (room.players.length === 0)
-        playerInfo = { name: gameInfo.name, icon: room.iconsAvailable.slice(0, 1), vip: isVIP, active: true }
-        room.players.push(playerInfo)
-        room.iconsAvailable = room.iconsAvailable.slice(1)
-        socket.broadcast.emit('room-updated', roomsData)
+        if (room.playing === false) {
+          playerName = gameInfo.name
+          connType = 'player'
+          isVIP = (room.players.length === 0)
+          playerInfo = { name: gameInfo.name, icon: room.iconsAvailable.slice(0, 1), vip: isVIP, active: true }
+          room.players.push(playerInfo)
+          room.iconsAvailable = room.iconsAvailable.slice(1)
+          socket.broadcast.emit('room-updated', roomsData)
+        } else {
+          for (player in room.players) {
+            if (!player.active && player.name === gameInfo.name) {
+              playerName = gameInfo.name
+              connType = 'player'
+              player.active = true
+            }
+          }
+          socket.broadcast.emit('room-updated', roomsData)
+        }
       }
     })
     socket.emit('player-info', playerInfo)
   })
+
+  // Submit prompts
+  socket.on('submit-prompt', promptSubmission => {
+    socket.broadcast.emit('submit-prompt', promptSubmission)
+  })
+
 
 })
 
