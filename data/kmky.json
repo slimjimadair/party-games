@@ -13,5 +13,137 @@
   },
   { "prompt": "[player]'s first celebrity crush",
     "answers": ["Brad Pitt", "Andrew Lloyd Webber", "Jennifer Aniston", "Minnie Mouse", "Hermione Granger", "Twilight guy", "Steve Buscemi", "George Clooney"]
-  }  
+  },
+  { "prompt": "A world record [player] thinks they could beat",
+    "answers": ["Longest phone call", "Most time on the toilet", "Longest beard", "110m hurdles"]
+  },
+  { "prompt": "A cartoon character [player] would date",
+    "answers": ["Minnie Mouse", "Miss Piggy", "Jessica Rabbit", "Daffy Duck", "Milhouse", "Troy McClure", "Spiderman"]
+  },
+  { "prompt": "A TV show [player] is ashamed to admit to liking",
+    "answers": ["Big Brother", "Family Guy", "Big Bang Theory", "Antiques Roadshow", "Nigella Lawson"]
+  },
+  { "prompt": "The actor [player] thinks would play them in a film about their life",
+    "answers": ["Steve Buscemi", "George Clooney", "Gary Oldman", "Daniel Radcliffe", "Helena Bonham Carter", "Judy Dench", "Angelina Jolie", "Tommy Wiseau", "Meryl Streep", "Daniel Day Lewis"]
+  },
+  { "prompt": "[player] wants to ________ but they don't have the time",
+    "answers": ["Get older", "Go to space", "Reinvent themself", "Hoard nesting dolls", "Start a mutiny"]
+  },
+  { "prompt": "[player] keeps ________ hidden in their bottom drawer",
+    "answers": ["The 'device'","The blueprints", "Your soul", "Chocolate", "Eggs", "A suggestively shaped carrot"]
+  },
+  { "prompt": "A work of fiction [player] would like to be a character in",
+    "answers": ["Lord of the Rings", "Star Wars", "Twilight", "Oliver Twist", "The Grinch", "Toy Story"]
+  },
+  { "prompt": "The last thing [player] looked up online",
+    "answers": ["How can I grow taller", "Pikachu", "Who let the dogs out?", "Why?", "GHOSTS!", "Strange odours", "Kermit + feet"]
+  },
+  { "prompt": "One of [player]'s favourite past fancy dress costumes",
+    "answers": ["The Ring girl", "Ennui", "Neo from the Matrix", "Pirate", "Hobbit"]
+  },
+  { "prompt": "The worst song [player] has had stuck in their head",
+    "answers": ["Funkytown", "Ra-ra-rasputin", "Temporary Secretary"]
+  },
+  { "prompt": "The first album [player] ever bought",
+    "answers": ["Ibiza Baroque Anthems 1693", "Now That's What I Call Music", "Best of Wings"]
+  },
+  { "prompt": "The title of [player]'s autobiography",
+    "answers": ["There and Back Again", "Getting It Done", "I Did It My Way", "Long Walk To Freedom", "MEEE!!!", "All About Me"]
+  },
+  { "prompt": "What's in a cocktail named after [player]?",
+    "answers": ["Sticks and stones", "Gin. Just Gin.", "Something artisan", "Blood, sweat and tears", "Otter musk", "Kelp", "Beef Stroganoff"]
+  },
+  { "prompt": "Something [player] would refuse to eat",
+    "answers": ["Poison", "Nuts", "Butts", "Meat", "Spinach", "Chocolate", "Mushrooms", "Bananas"]
+  },
+  { "prompt": "A charity cause [player] would refuse to contribute to",
+    "answers": ["The children", "Donkey sanctuary", "Feed the rich", "PETA", "The Mysterons"]
+  },
+  { "prompt": "A useless skill that [player] has",
+    "answers": ["Nose whistling", "Spontaneous combustion", "Bird calls", "Throat singing", "Knife juggling", "Their job", "Can sleep anywhere", "Flight"]
+  },
+  { "prompt": "[player]'s old nickname",
+    "answers": ["HRH", "Stinky", "Crazy Pete", "The Witch", "The Shark", "Smiler", "Swifty"]
+  },
+  { "prompt": "[player]'s dream pet",
+    "answers": ["Wolf", "Unicorn", "Sausage dog", "Alien", "Snake", "Shark"]
+  },
+  { "prompt": "Something [player] would wear if they ran out of clean underwear",
+    "answers": ["Bark", "Tin foil", "Banana skins"]
+  },
+  { "prompt": "A song [player] would ask to be played at their funeral",
+    "answers": ["Star Wars Imperial March", "Beethoven's Fifth", "Who let the dogs out?", "Backstreet's Back", "Single Ladies"]
+  },
+  { "prompt": "The name of [player]'s first pet",
+    "answers": ["[GENERIC DOG NAME]", "Bobo", "Patch", "Spot", "Ian", "Bucephalus", "Koyaanisqatsi"]
+  },
+  { "prompt": "The sport that [player] is most likely to do professionally",
+    "answers": ["Elephant polo", "Human hunting", "Petanque", "Kabaddi", "Pesapallo"]
+  },
+  { "prompt": "What [player] wanted to be when they grew",
+    "answers": ["Taller", "A baller", "A tractor", "Emperor of the Universe", "Queen", "A Muppet"]
+  },
+  { "prompt": "The secret to [player]'s success",
+    "answers": ["A winning smile", "Bribery", "3am starts", "Lunges", "Listening to the voices"]
+  },
+  { "prompt": "A film that never fails to make [player] laugh",
+    "answers": ["Finding Nemo", "Saw", "Bambi", "The Room"]
+  },
+  { "prompt": "A habit that [player] can't give up",
+    "answers": ["Smoking", "Putting their socks on first", "Honking at women in the street", "Misleading Amazon reviews", "Scratching"]
+  },
+  { "prompt": "Something [player] would wear to make a statement",
+    "answers": ["Birthday suit", "Fascinator", "Top hat", "Silver cowboy boots", "Fishnet stockings", "Barney the Dinosaur costume"]
+  },
+  { "prompt": "The last meal [player] cooked",
+    "answers": ["Toast", "Beans", "Sushi", "Oysters Rockerfeller"]
+  },
+  { "prompt": "Something [player] would do to show off",
+    "answers": ["Dance", "Jump", "Talk in the third person", "Their doctorate", "Anything", "Show off the guns"]
+  },
+  { "prompt": "A job [player] thinks they'd be great at",
+    "answers": ["Mime", "Ventriloquist", "Dog trainer", "Astronaut", "Tiger park owner"]
+  },
+  { "prompt": "Something [player] couldn't do, no matter how hard they tried",
+    "answers": ["Kill Harry Potter", "Find the truth", "Swim", "Juggle", "Dance", "Go to Wales"]
+  },
+  { "prompt": "[player]'s least favourite holiday destination",
+    "answers": ["Beach", "DMZ", "Moon", "Your mum's house", "Florida"]
+  },
+  { "prompt": "Something [player] might start collecting",
+    "answers": ["Furballs", "Severed hands", "Banana skins", "Wine corks"]
+  },
+  { "prompt": "[player]'s spirit animal",
+    "answers": ["Naked mole rat", "Unicorn", "Wolf", "Banana slug", "Geoduck", "Steve Buscemi"]
+  },
+  { "prompt": "[player]'s name if they were a superhero sidekick",
+    "answers": ["Handy Andy", "The Other One", "The Obstruction"]
+  },
+  { "prompt": "The coolest thing [player] has ever won",
+    "answers": ["A breakdancing competition", "A bran tub", "Karate trophy", "Mr Universe"]
+  },
+  { "prompt": "Something crazy [player] would buy after winning the lottery would be ________",
+    "answers": ["A lot of pie", "Sweets", "Fast car", "An emotionally detached lover"]
+  },
+  { "prompt": "The weirdest place [player] has slept",
+    "answers": ["In a hedge", "A skip", "The White House", "McDonalds bathroom"]
+  },
+  { "prompt": "The punchline of [player]'s favourite joke is",
+    "answers": ["My wife", "To get to the other side", "Because it had no legs", "That's a warthog!"]
+  },
+  { "prompt": "The period of history [player] would most like to live in",
+    "answers": ["Yesterday", "80s Miami", "The dinosaur times", "French Revolution"]
+  },
+  { "prompt": "[player]'s worst subject in school",
+    "answers": ["Maths", "P.E.", "Breaktime", "Quantum Physics"]
+  },
+  { "prompt": "A nightmare for [player] would be landing on 'The Planet of the ________'",
+    "answers": ["Spiders", "Slow walkers", "Pensioners", "Children on planes", "Student Loan Debt"]
+  },
+  { "prompt": "The stupidest thing [player] ever got talked into",
+    "answers": ["A date", "Photobombing Stan Lee", "A coven", "A pyramid scheme"]
+  },
+  { "prompt": "The last dream [player] can remember involved ________",
+    "answers": ["Elves", "Passive-Aggressive Ghosts", "Horticulture", "A Muppet Fantasy", "Teeth falling out"]
+  }
 ]

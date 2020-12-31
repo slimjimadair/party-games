@@ -291,6 +291,23 @@ button {
   text-decoration: underline;
 }
 
+.score {
+  width: 90%;
+  margin: 1rem 0;
+  text-align: center;
+  font-family: 'Boogaloo', cursive;
+  font-size: 2rem;
+}
+
+.first {
+  font-size: 3rem !important;
+}
+
+.score .value {
+  font-family: 'Boogaloo', cursive;
+  color: var(--bluegreen);
+}
+
 .foot {
   height: 10vh;
 }

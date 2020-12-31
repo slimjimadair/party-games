@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
       blkCtrlReady.innerHTML = createDiv(gameLabels[roomInfo.game].instructions.toUpperCase(), 'block-title light')
       setTimeout(function(){ startGame(roomInfo.game) }, infoTime)
     } else if (connType === 'play') {
-      setPlayState('ready')
+      setPlayState('wait')
       blkPlayWait.innerHTML = createDiv(gameLabels[roomInfo.game].instructions.toUpperCase(), 'block-title light')
     }
   }
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
       endGame_kmky()
     } else {
       gameInfo.curRound = { id: roundID }
-      setRoundNumber(roundID)
+      setRoundNumber(roundID, gameInfo.numRounds)
       setAvatar()
       gameInfo.curRound.curQuestion = 0
       gameInfo.curRound.questions = []
@@ -399,6 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if ( gameInfo.curRound.curVotes === roomInfo.players.length - 1 ) {
       setTimeout(function(){ scoreQuestion_kmky() }, delayTime)
     }
+    roomInfo.players.forEach(player => {
+      if (player.name === answerInfo.from) blkCtrlWait.innerHTML += createWrapper('holder',[createPlayerDiv(player, playerType)])
+    })
   }
 
   // Score question
@@ -432,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
     question.answers.forEach( answer => {
       answer.votes.forEach( vote => {
         roomInfo.players.forEach( player => {
-          if ( !answer.type && player.name === answer.by ) player.score += liedScore
+          if ( !answer.type && player.name === answer.by && player.name !== vote ) player.score += liedScore
           if ( answer.type && player.name === vote ) player.score += trueScore
         })
       })
@@ -456,25 +459,29 @@ document.addEventListener('DOMContentLoaded', () => {
         itemID += 1
       })
     }, infoTime * 1)
-    setTimeout(function(){ showScores_kmky(trueScore, liedScore) }, infoTime * 2)
+    subtitleText = `${trueScore} points for finding the truth  |  ${liedScore} for everyone you fool`
+    setTimeout(function(){ showScores_kmky(subtitleText) }, infoTime * 2)
     setTimeout(function(){ startQuestion_kmky(questionID + 1) }, infoTime * 3)
   }
 
   // Show scores
-  function showScores_kmky(trueScore, liedScore) {
+  function showScores_kmky(subtitleText) {
     setRoomState('score')
     setAvatar()
-    subtitleText = `${trueScore} points for finding the truth  |  ${liedScore} for everyone you fool`
     setTitle("SCORES ON THE DOORS", subtitleText)
     blkCtrlScore.innerHTML = ''
+    var topPlayer = true
     roomInfo.players.forEach(player => {
-      blkCtrlScore.innerHTML += createDiv(`${player.name}: ${player.score}`, 'block-title')
+      if (topPlayer) { classAdd = 'first' } else { classAdd = '' }
+      blkCtrlScore.innerHTML += createDiv(`${player.name}: <span class="value">${player.score}</span>`, `score ${classAdd}`)
+      topPlayer = false
     })
   }
 
   // End game
   function endGame_kmky() {
-    console.log('GAME OVER MAN! GAME OVER!')
+    showScores_kmky('GAME OVER MAN! GAME OVER!')
+    setTimeout(function(){ reload() }, infoTime * 2)
   }
 
   // PROCESS FUNCTIONS
@@ -561,11 +568,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return
   }
 
-  function setRoundNumber(round = null) {
-    if (round === null || round === '') {
+  function setRoundNumber(round = null, total = null) {
+    if (round === null || round === '' || total === null || total === '') {
       elemHeadRound.innerHTML = ''
     } else {
-      elemHeadRound.innerHTML = `<div class="text main">ROUND ${round}</div>`
+      elemHeadRound.innerHTML = `<div class="text main">ROUND ${round} OF ${total}</div>`
     }    
     return    
   }
