@@ -119,7 +119,23 @@ io.on('connection', socket => {
       if (room.code === roomInfo.code) room = roomInfo
       console.log(`Room ${room.code} set to ${room.state}`)
     })
-  }) 
+  })
+
+  // Questions
+  socket.on('question-ask', questionInfo => {
+    socket.broadcast.emit('question-ask', questionInfo)
+  })
+  socket.on('question-answer', answerInfo => {
+    socket.broadcast.emit('question-answer', answerInfo)
+  })
+
+  // Choices
+  socket.on('choice-ask', choiceInfo => {
+    socket.broadcast.emit('choice-ask', choiceInfo)
+  })
+  socket.on('choice-answer', answerInfo => {
+    socket.broadcast.emit('choice-answer', answerInfo)
+  })
 
 })
 

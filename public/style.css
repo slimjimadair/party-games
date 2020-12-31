@@ -314,6 +314,7 @@ button {
   .holder { width: 30vw; }
   .avatar-big { top: 2vh; width: 12vh; height: 12vh; }
   .prompt { font-size: 3rem; }
+  .item .main { font-size: 2rem; }
 }
 
 @media only screen and (min-width: 1200px) {
@@ -324,4 +325,5 @@ button {
   .holder { width: 20vw; }
   .avatar-big { top: 2vh; width: 12vh; height: 12vh; }
   .prompt { font-size: 3rem; }
+  .item .main { font-size: 2rem; }
 }

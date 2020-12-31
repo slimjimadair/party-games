@@ -41,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let gameLabels = {
     'kmky': {title: 'Knowing me, Knowing You', subtitle: 'How well do you know your friends?', instructions: 'Players answer questions about themselves and then each other.<br />Points are awarded for guessing the true answers and getting other players to guess your lies!'}
   }
+  let infoTime = 500
+  let delayTime = 100
 
   // CONNECTION
   const socket = io()
@@ -60,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       roomInfo = newRoomInfo
       displayMessage(elemInfoStart, `Created room ${roomInfo.code}`, 'success')
       setRoomState('join')
-      setTitle(gameLabels[roomInfo.game].title, gameLabels[roomInfo.game].subtitle)
+      setTitle(gameLabels[roomInfo.game].title.toUpperCase(), gameLabels[roomInfo.game].subtitle)
       setRoomCode(roomInfo.code)
       
       blkCtrlJoinCode.innerHTML = createDiv(`<div class="text note">ROOM CODE</div><div class="text main">${roomInfo.code}</div>`,'item large all-skewed');
@@ -93,11 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
       playInfo.name = ''
     } else {
       playInfo = newPlayInfo.player
-      console.log(playInfo.name)
       roomInfo = newPlayInfo.room
       displayMessage(elemInfoJoin, `Joined room ${roomInfo.code} as ${playInfo.name}`, 'success')
       setPlayState('join')
-      setTitle(gameLabels[roomInfo.game].title, gameLabels[roomInfo.game].subtitle)
+      setTitle(gameLabels[roomInfo.game].title.toUpperCase(), gameLabels[roomInfo.game].subtitle)
       setAvatar(playInfo.icon)
       setRoomCode(roomInfo.code)
       if (playInfo.vip) {
@@ -129,6 +130,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
+  // Question asked
+  socket.on('question-ask', questionInfo => {
+    if (connType === 'play' && roomInfo.code === questionInfo.room) {
+      // Show question to player (or holding message)
+      setPlayState('wait')
+      setPrompt(questionInfo.holdingTitle)
+      blkPlayInput.innerHTML = createDiv(questionInfo.holdingText, 'block-title light')
+      var questionSet = false
+      questionInfo.questionData.forEach( question => {
+        if (question.for === playInfo.name) {
+          var questionSet = true
+          setPlayState('input')
+          setPrompt(question.title)
+          blkPlayInput.innerHTML = `<input type="text" id="answer-input" name="input" maxlength="100"><div class="holder"><button id="answer-submit" type="submit" class="green">SUBMIT</button></div>`
+          blkPlayInput.innerHTML += createDiv(question.detail.toUpperCase(), 'block-title light')
+          document.querySelector('#answer-submit').addEventListener('click', (input) => {
+            emitData = { room: questionInfo.room, game: questionInfo.game, from: question.for, answer: document.querySelector('#answer-input').value.toUpperCase() }
+            socket.emit('question-answer', emitData)
+            setPlayState('wait')
+            blkPlayInput.innerHTML = createDiv('Waiting for all players to answer.'.toUpperCase(), 'block-title light')
+          })
+        }
+      })
+    }
+  })
+
+  // Question answered
+  socket.on('question-answer', answerInfo => {
+    if (connType === 'room' && roomInfo.code === answerInfo.room) {
+      // Process answer if matching room information
+      if (gameInfo.type === 'kmky' && gameInfo.curRound.curQuestion === 0) { processAnswer_kmky('truth', answerInfo) }
+      else if (gameInfo.type === 'kmky') { processAnswer_kmky('lie', answerInfo) }
+    }
+  })
+
 
   // GAME FUNCTIONS
   // Start room
@@ -155,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (connType === 'room') {
       setRoomState('ready')
       blkCtrlReady.innerHTML = createDiv(gameLabels[roomInfo.game].instructions.toUpperCase(), 'block-title light')
-      setTimeout(function(){ startGame(roomInfo.game) }, 5000)
+      setTimeout(function(){ startGame(roomInfo.game) }, infoTime)
     } else if (connType === 'play') {
       setPlayState('ready')
       blkPlayWait.innerHTML = createDiv(gameLabels[roomInfo.game].instructions.toUpperCase(), 'block-title light')
@@ -164,7 +200,129 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Start game
   function startGame(gameType) {
-    console.log(`START GAME (${gameType})`)
+    if (gameType = 'kmky') {
+      gameInfo = { type: gameType, numRounds: Math.floor(10 / roomInfo.players.length), curRound: { id: 0 }, gameData: shuffle(roomInfo.gameData) }
+      startRound_kmky(1)
+    } else {
+      // Game not recognised - kick to reset room (and players via disconnect)
+      reload()
+    }
+  }
+
+  // KNOWING ME, KNOWING YOU FUNCTIONS
+  // Reset for a new round
+  function startRound_kmky(roundID) {
+    // Check if new round allowed
+    if (roundID > gameInfo.numRounds) {
+      // GameOver
+      endGame_kmky()
+    } else {
+      gameInfo.curRound = { id: roundID }
+      setRoundNumber(roundID)
+      gameInfo.curRound.curQuestion = 0
+      gameInfo.curRound.questions = []
+      roomInfo.players.forEach( player => {
+        // Get questions for each player in the game
+        var question = gameInfo.gameData.pop()
+        var questionText = question.prompt.toUpperCase()
+        questionText = questionText.replace("[PLAYER]", `<span class="highlight">${player.name}</span>`)
+        var question = { target: player.name, question: questionText, truth: false, answers: [], dummies: question.answers }
+        gameInfo.curRound.questions.push(question)
+      })
+      askInput_kmky('truths')
+    }
+  }
+
+  // Ask a question
+  function startQuestion_kmky(questionID) {
+    if (questionID > gameInfo.curRound.questions.length) {
+      // No more questions to process for round; try to start a new one
+      startRound_kmky(gameInfo.curRound.id + 1)
+    } else {
+      gameInfo.curRound.curQuestion = questionID
+      askInput_kmky('lies', questionID)
+    }
+  }
+
+  // Ask players for input
+  function askInput_kmky(type, questionID = 0) {
+    if (type === 'truths') {
+      setRoomState('wait')
+      blkCtrlWait.innerHTML = createDiv('ENTER YOUR TRUTHS ON YOUR DEVICES NOW!', 'block-title light')
+      blkCtrlWait.innerHTML += createDiv('ANSWERS IN', 'block-title')
+      var truthList = []
+      gameInfo.curRound.questions.forEach( question => {
+        // Add a truth prompt for all players
+        truthList.push({ for: question.target, title: question.question, detail: 'Answer truthfully about yourself!' })
+      })
+      var emitData = { room: roomInfo.code, game: roomInfo.game, holdingTitle: truthList[0].title, holdingText: "Why haven't you been asked a question?".toUpperCase(), questionData: truthList }
+      socket.emit('question-ask', emitData)
+    } else if (type === 'lies') {
+      setRoomState('wait')
+      var question = gameInfo.curRound.questions[questionID - 1]
+      setPrompt(question.question)
+      blkCtrlWait.innerHTML = createDiv('ENTER A CONVINCING LIE ON YOUR DEVICES NOW!', 'block-title light')
+      blkCtrlWait.innerHTML += createDiv('ANSWERS IN', 'block-title')
+      var lieList = []
+      roomInfo.players.forEach( player => {
+        // Add a lie prompt for all players other than the target
+        if ( player.name !== question.target ) lieList.push({ for: player.name, title: question.question, detail: 'Enter a convincing lie!' })
+      })
+      var emitData = { room: roomInfo.code, game: roomInfo.game, holdingTitle: question.question, holdingText: "You did this".toUpperCase(), questionData: lieList }
+      socket.emit('question-ask', emitData)
+    }
+  }
+
+  // Process question answers
+  function processAnswer_kmky(type, answerInfo) {
+    if (type === 'truth') {
+      var checkTruths = 0
+      gameInfo.curRound.questions.forEach( question => {
+        if ( question.target === answerInfo.from ) {
+          // Update question data where have answer
+          question.truth = true
+          question.answers.push({ text: answerInfo.answer, type: true })
+        }
+        if (question.truth) checkTruths += 1
+      })
+      if (checkTruths === gameInfo.curRound.questions.length) {
+        // All players have submitted truths
+        setTimeout(function(){ startQuestion_kmky(1) }, delayTime)
+      }
+    } else if (type === 'lie') {
+      var question = gameInfo.curRound.questions[gameInfo.curRound.curQuestion - 1]
+      question.answers.push({ text: answerInfo.answer, type: false, by: answerInfo.from })
+      if (question.answers.length === roomInfo.players.length) {
+        var dummies = shuffle(question.dummies)
+        for (var i = question.answers.length; i < 4; i++) {
+          question.answers.push({ text: dummies.pop().toUpperCase(), type: false, by: 'GAME'})
+        }
+        setTimeout(function(){ showAnswers_kmky() }, delayTime)
+      }
+    }
+    roomInfo.players.forEach(player => {
+      if (player.name === answerInfo.from) blkCtrlWait.innerHTML += createWrapper('holder',[createPlayerDiv(player, playerType)])
+    })
+  }
+
+  // Show answers
+  function showAnswers_kmky() {
+    setRoomState('show')
+    var questionID = gameInfo.curRound.curQuestion
+    gameInfo.curRound.questions[questionID - 1].answers = shuffle(gameInfo.curRound.questions[questionID - 1].answers) // Shuffle answer list
+    var question = gameInfo.curRound.questions[questionID - 1]
+    blkCtrlShow.innerHTML = ''
+    setPrompt(question.question)
+    var itemID = 1
+    question.answers.forEach( answer => {
+      blkCtrlShow.innerHTML += createWrapper('holder', [createDiv(`<div class="text main">${answer.text.toUpperCase()}</div>`, 'item all-skewed')], `vote-item-${itemID}`)
+      itemID += 1
+    })
+  }
+
+  // End game
+  function endGame_kmky() {
+    console.log('GAME OVER MAN! GAME OVER!')
   }
 
   // PROCESS FUNCTIONS
@@ -172,9 +330,11 @@ document.addEventListener('DOMContentLoaded', () => {
     playInfo.state = state
     // Show / hide appropriate sections for required player state
     if (state === 'join') {
-      showHideElements([blkGame, blkPlayJoin], [blkSplash, blkPlayWait, blkPlayInput, blkPlayInput])
+      showHideElements([blkGame, blkPlayJoin], [blkSplash, blkPlayWait, blkPlayInput, blkPlayChoose])
     } else if (state === 'ready') {
-      showHideElements([blkGame, blkPlayWait], [blkSplash, blkPlayJoin, blkPlayInput, blkPlayInput])
+      showHideElements([blkGame, blkPlayWait], [blkSplash, blkPlayJoin, blkPlayInput, blkPlayChoose])
+    } else if (state === 'input') {
+      showHideElements([blkGame, blkPlayInput], [blkSplash, blkPlayJoin, blkPlayWait, blkPlayChoose])
     }
   }
 
@@ -186,6 +346,10 @@ document.addEventListener('DOMContentLoaded', () => {
       showHideElements([blkGame, blkCtrlJoinCode, blkCtrlJoinList], [blkSplash, blkCtrlReady, blkCtrlWait, blkCtrlShow, blkCtrlScore])
     } else if (state === 'ready') {
       showHideElements([blkGame, blkCtrlReady], [blkSplash, blkCtrlJoinCode, blkCtrlJoinList, blkCtrlWait, blkCtrlShow, blkCtrlScore])
+    } else if (state === 'wait') {
+      showHideElements([blkGame, blkCtrlWait], [blkSplash, blkCtrlJoinCode, blkCtrlJoinList, blkCtrlReady, blkCtrlShow, blkCtrlScore])
+    } else if (state === 'show') {
+      showHideElements([blkGame, blkCtrlShow], [blkSplash, blkCtrlJoinCode, blkCtrlJoinList, blkCtrlReady, blkCtrlWait, blkCtrlScore])
     }
   }
 
@@ -238,20 +402,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (round === null || round === '') {
       elemHeadRound.innerHTML = ''
     } else {
-      elemHeadRound.innerHTML = `<div class="text main">ROUND: ${round}</div>`
+      elemHeadRound.innerHTML = `<div class="text main">ROUND ${round}</div>`
     }    
     return    
   }
 
   function setTitle(title, subtitle) {
     showHideElements([elemTitleMain, elemTitleSub], [elemTitlePrompt])
-    elemTitleMain.innerHTML = title.toUpperCase()
+    elemTitleMain.innerHTML = title
     elemTitleSub.innerHTML = subtitle
   }
 
   function setPrompt(text) {
     showHideElements([elemTitlePrompt], [elemTitleMain, elemTitleSub])
-    elemTitlePrompt.innerHTML = text.toUpperCase()
+    elemTitlePrompt.innerHTML = text
   }
 
   function adjustClasses(location, classesOn, classesOff) {
@@ -272,6 +436,16 @@ document.addEventListener('DOMContentLoaded', () => {
     adjustClasses(location, [], ['alert', 'success'])
     if (msgType === 'alert') adjustClasses(location, ['alert'], [])
     if (msgType === 'success') adjustClasses(location, ['success'], [])
+  }
+
+  function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array
   }
 
 })
