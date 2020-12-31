@@ -59,7 +59,7 @@ io.on('connection', socket => {
     roomsData.forEach( room => {
       if (room.code === joinInfo.room && room.state === 'join' && !playsList[room.code].includes(joinInfo.name)) {
         // Add new player if in join mode
-        playInfo = { name: joinInfo.name, state: 'join', icon: room.icons.pop(), vip: (room.players.length === 0), active: true }
+        playInfo = { name: joinInfo.name, state: 'join', icon: room.icons.pop(), vip: (room.players.length === 0), active: true, score: 0 }
         roomInfo = room
         emitInfo = { player: playInfo, room: roomInfo }
         room.players.push(playInfo)
